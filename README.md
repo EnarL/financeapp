@@ -44,4 +44,5 @@ A simplistic finance app designed to manage and track personal finances.
 ### Test account
 
 username: test
+
 password: test
