@@ -1,7 +1,8 @@
 <template>
   <div class="charts-container">
     <div class="chart-card">
-      <canvas id="monthlyIncomesChart"></canvas>
+
+     <canvas id="monthlyIncomesChart"></canvas>
       <canvas id="monthlyExpensesChart"></canvas>
     </div>
   </div>
@@ -10,9 +11,11 @@
 <script>
 import { Chart, registerables } from 'chart.js';
 
+
 Chart.register(...registerables);
 
 export default {
+  // eslint-disable-next-line vue/multi-word-component-names
   name: 'ChartsContainer',
   props: {
     expenses: Array,
@@ -21,6 +24,7 @@ export default {
   mounted() {
     this.updateMonthlyExpensesChart();
     this.updateMonthlyIncomesChart();
+
   },
   watch: {
     expenses: 'updateMonthlyExpensesChart',
@@ -28,12 +32,16 @@ export default {
   },
   methods: {
     updateMonthlyExpensesChart() {
+      if (this.monthlyExpensesChart) {
+        this.monthlyExpensesChart.destroy();
+      }
       const ctx = document.getElementById('monthlyExpensesChart').getContext('2d');
-
-      // Aggregate expenses data by month
       const monthData = this.expenses.reduce((acc, expense) => {
         const month = new Date(expense.date).getMonth();
-        acc[month] = (acc[month] || 0) + parseFloat(expense.amount);
+        if (!acc[month]) {
+          acc[month] = 0;
+        }
+        acc[month] += parseFloat(expense.amount);
         return acc;
       }, {});
 
@@ -41,15 +49,9 @@ export default {
       const amounts = Object.values(monthData);
 
       const gradient = ctx.createLinearGradient(0, 0, 0, 400);
-      gradient.addColorStop(0, 'rgba(0, 98, 112, 0.5)');
-      gradient.addColorStop(1, 'rgba(0, 98, 112, 0)');
+      gradient.addColorStop(0, 'rgba(0, 98, 112, 0.5)'); // Updated color
+      gradient.addColorStop(1, 'rgba(0, 98, 112, 0)'); // Updated color
 
-      // Destroy the previous chart if it exists
-      if (this.monthlyExpensesChart) {
-        this.monthlyExpensesChart.destroy();
-      }
-
-      // Create the chart
       this.monthlyExpensesChart = new Chart(ctx, {
         type: 'line',
         data: {
@@ -57,24 +59,31 @@ export default {
           datasets: [{
             label: 'Expenses',
             data: amounts,
-            borderColor: '#006270',
+            borderColor: '#006270', // Updated color
             backgroundColor: gradient,
             fill: true,
-            tension: 0.4,
-            pointBackgroundColor: '#006270',
+            tension: 0.4, // Smooth curves
+            pointBackgroundColor: '#006270', // Updated color
             pointBorderColor: 'white',
+            pointHoverRadius: 5,
             pointHoverBackgroundColor: 'white',
-            pointHoverBorderColor: '#006270',
+            pointHoverBorderColor: '#006270', // Updated color
             pointRadius: 3,
             pointHitRadius: 10
           }]
         },
         options: {
           scales: {
-            x: { grid: { display: false } },
+            x: {
+              grid: {
+                display: false
+              }
+            },
             y: {
               beginAtZero: true,
-              grid: { color: 'rgba(200, 200, 200, 0.2)' }
+              grid: {
+                color: 'rgba(200, 200, 200, 0.2)'
+              }
             }
           },
           responsive: true,
@@ -82,20 +91,24 @@ export default {
             legend: {
               display: true,
               position: 'top',
-              labels: { color: '#006270' }
+              labels: {
+                color: '#006270' // Updated color
+              }
             },
             title: {
               display: true,
               text: 'Monthly Expenses by Month',
-              color: '#006270',
-              font: { size: 18 }
+              color: '#006270', // Updated color
+              font: {
+                size: 18
+              }
             },
             tooltip: {
-              backgroundColor: 'rgba(0, 98, 112, 0.8)',
+              backgroundColor: 'rgba(0, 98, 112, 0.8)', // Updated color
               titleColor: 'white',
               bodyColor: 'white',
               callbacks: {
-                label: function(tooltipItem) {
+                label: function (tooltipItem) {
                   return tooltipItem.label + ': $' + tooltipItem.raw.toFixed(2);
                 }
               }
@@ -104,13 +117,17 @@ export default {
         }
       });
     },
-    updateMonthlyIncomesChart() {
+    updateMonthlyIncomesChart(){
+      if (this.monthlyIncomesChart) {
+        this.monthlyIncomesChart.destroy();
+      }
       const ctx = document.getElementById('monthlyIncomesChart').getContext('2d');
-
-      // Aggregate income data by month
       const monthData = this.incomes.reduce((acc, income) => {
         const month = new Date(income.date).getMonth();
-        acc[month] = (acc[month] || 0) + parseFloat(income.amount);
+        if (!acc[month]) {
+          acc[month] = 0;
+        }
+        acc[month] += parseFloat(income.amount);
         return acc;
       }, {});
 
@@ -118,15 +135,9 @@ export default {
       const amounts = Object.values(monthData);
 
       const gradient = ctx.createLinearGradient(0, 0, 0, 400);
-      gradient.addColorStop(0, 'rgba(0, 98, 112, 0.5)');
-      gradient.addColorStop(1, 'rgba(0, 98, 112, 0)');
+      gradient.addColorStop(0, 'rgba(0, 98, 112, 0.5)'); // Updated color
+      gradient.addColorStop(1, 'rgba(0, 98, 112, 0)'); // Updated color
 
-      // Destroy the previous chart if it exists
-      if (this.monthlyIncomesChart) {
-        this.monthlyIncomesChart.destroy();
-      }
-
-      // Create the chart
       this.monthlyIncomesChart = new Chart(ctx, {
         type: 'line',
         data: {
@@ -134,24 +145,31 @@ export default {
           datasets: [{
             label: 'Incomes',
             data: amounts,
-            borderColor: '#006270',
+            borderColor: '#006270', // Updated color
             backgroundColor: gradient,
             fill: true,
-            tension: 0.4,
-            pointBackgroundColor: '#006270',
+            tension: 0.4, // Smooth curves
+            pointBackgroundColor: '#006270', // Updated color
             pointBorderColor: 'white',
+            pointHoverRadius: 5,
             pointHoverBackgroundColor: 'white',
-            pointHoverBorderColor: '#006270',
+            pointHoverBorderColor: '#006270', // Updated color
             pointRadius: 3,
             pointHitRadius: 10
           }]
         },
         options: {
           scales: {
-            x: { grid: { display: false } },
+            x: {
+              grid: {
+                display: false
+              }
+            },
             y: {
               beginAtZero: true,
-              grid: { color: 'rgba(200, 200, 200, 0.2)' }
+              grid: {
+                color: 'rgba(200, 200, 200, 0.2)'
+              }
             }
           },
           responsive: true,
@@ -159,20 +177,24 @@ export default {
             legend: {
               display: true,
               position: 'top',
-              labels: { color: '#006270' }
+              labels: {
+                color: '#006270' // Updated color
+              }
             },
             title: {
               display: true,
               text: 'Monthly Incomes by Month',
-              color: '#006270',
-              font: { size: 18 }
+              color: '#006270', // Updated color
+              font: {
+                size: 18
+              }
             },
             tooltip: {
-              backgroundColor: 'rgba(0, 98, 112, 0.8)',
+              backgroundColor: 'rgba(0, 98, 112, 0.8)', // Updated color
               titleColor: 'white',
               bodyColor: 'white',
               callbacks: {
-                label: function(tooltipItem) {
+                label: function (tooltipItem) {
                   return tooltipItem.label + ': $' + tooltipItem.raw.toFixed(2);
                 }
               }
@@ -181,16 +203,24 @@ export default {
         }
       });
     }
-  }
+}
+
+
 }
 </script>
 
 <style scoped>
 .charts-container {
-  width: 80%; /* Reduced width for better alignment */
+  width: 100%; /* Reduced width for better alignment */
   margin: 0 auto;
 }
 
+@Media(min-width: 768px) {
+  .charts-container {
+    width: 80%;
+    height:100%;
+  }
+}
 .chart-card {
   border-radius: 8px;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
@@ -222,4 +252,5 @@ export default {
     width: 100%;
   }
 }
+
 </style>

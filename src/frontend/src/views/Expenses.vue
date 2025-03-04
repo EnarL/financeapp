@@ -54,20 +54,24 @@ export default {
 * {
   margin: 0;
   padding: 0;
-  box-sizing: border-box;
   height:100vh;
+  box-sizing: border-box;
 }
 
 .dashboard {
   background-color: lightblue;
   text-align: center;
-  margin-left: 200px;
   font-family: 'Roboto', sans-serif;
-  color: #333;
   padding: 20px;
+  color: #333;
   height:100%;
-}
 
+}
+@Media(min-width: 768px) {
+  .dashboard {
+    margin-left: 200px;
+  }
+}
 h1 {
   margin-bottom: 2rem;
   color: #006270;
@@ -77,6 +81,7 @@ h1 {
 input {
   display: block;
   width: 100%;
+  height:100%;
   margin-bottom: 1rem;
   border: 1px solid #ddd;
   border-radius: 4px;

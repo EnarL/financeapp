@@ -1,23 +1,24 @@
 <template>
-  <div class = "dashboard">
+  <div class="dashboard">
+
     <h1>Welcome, {{ username }}</h1>
+
     <div class="forms-container">
+
       <AddExpense @add-expense="addExpense"></AddExpense>
       <AddIncome @add-income="addIncome"></AddIncome>
     </div>
-
     <ChartsContainer :expenses="expenses" :incomes="incomes"></ChartsContainer>
     <div v-if="loading" class="loading">Loading...</div>
     <div v-if="error" class="error">{{ error }}</div>
   </div>
-
 </template>
+
 <script>
 import { mapState, mapActions } from 'vuex';
 import AddExpense from '@/components/AddExpense.vue';
 import AddIncome from '@/components/AddIncome.vue';
 import ChartsContainer from '@/components/ChartsContainer.vue';
-
 
 export default {
   // eslint-disable-next-line vue/multi-word-component-names
@@ -68,10 +69,10 @@ export default {
   padding: 0;
   box-sizing: border-box;
 }
+
 .dashboard {
   background-color: lightblue;
   text-align: center;
-  margin-left: 200px;
   font-family: 'Roboto', sans-serif;
   color: #333;
   padding: 20px;
@@ -83,10 +84,10 @@ export default {
   gap: 20px;
   margin-bottom: 2rem;
 }
-.forms-container div {
-  width: 600px;
-}
-
+@Media(min-width: 768px) {
+  .forms-container div {
+    width: 600px;
+  }}
 h1 {
   margin-bottom: 2rem;
   color: #006270;

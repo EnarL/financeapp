@@ -1,10 +1,14 @@
 <template>
   <div class="user-icon">
+
     <span @click="toggleDropdown">{{ username }}</span>
+
     <div v-if="showDropdown" class="dropdown-menu">
       <button @click="handleLogout">Logout</button>
       <button @click="openSettings">Settings</button>
+
     </div>
+
   </div>
 </template>
 

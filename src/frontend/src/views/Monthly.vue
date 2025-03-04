@@ -57,12 +57,13 @@ export default {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
+  height:100vh;
 }
 
 .dashboard {
   background-color: lightblue;
   text-align: center;
-  margin-left: 200px;
+
   font-family: 'Roboto', sans-serif;
   color: #333;
   padding: 20px;

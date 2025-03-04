@@ -37,7 +37,14 @@
 .sidebar ul li a:hover {
   text-decoration: underline;
 }
+
 .dark .sidebar {
   background-color: #333;
+}
+
+@media (max-width: 768px) {
+  .sidebar {
+    display: none;
+  }
 }
 </style>

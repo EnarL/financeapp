@@ -167,7 +167,12 @@ export default {
   padding: 20px;
   border-radius: 8px;
 }
+@media (min-width: 768px) {
+  .charts-container {
+    margin-left:200px;
+  }
 
+}
 .chart-card {
   border-radius: 8px;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
