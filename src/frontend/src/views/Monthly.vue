@@ -63,7 +63,7 @@ export default {
 .dashboard {
   background-color: lightblue;
   text-align: center;
-
+  gap: 20px;
   font-family: 'Roboto', sans-serif;
   color: #333;
   padding: 20px;

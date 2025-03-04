@@ -1,8 +1,7 @@
 <template>
   <div class="charts-container">
     <div class="chart-card">
-
-     <canvas id="monthlyIncomesChart"></canvas>
+      <canvas id="monthlyIncomesChart"></canvas>
       <canvas id="monthlyExpensesChart"></canvas>
     </div>
   </div>
@@ -10,27 +9,61 @@
 
 <script>
 import { Chart, registerables } from 'chart.js';
-
+import { useDark } from '@vueuse/core';
 
 Chart.register(...registerables);
 
 export default {
-  // eslint-disable-next-line vue/multi-word-component-names
   name: 'ChartsContainer',
   props: {
     expenses: Array,
     incomes: Array
   },
+  setup() {
+    const isDark = useDark();
+    return { isDark };
+  },
   mounted() {
     this.updateMonthlyExpensesChart();
     this.updateMonthlyIncomesChart();
-
   },
   watch: {
     expenses: 'updateMonthlyExpensesChart',
-    incomes: 'updateMonthlyIncomesChart'
+    incomes: 'updateMonthlyIncomesChart',
+    isDark: 'updateCharts'
   },
   methods: {
+    updateCharts() {
+      this.updateMonthlyExpensesChart();
+      this.updateMonthlyIncomesChart();
+    },
+    getChartColors() {
+      if (this.isDark) {
+        return {
+          borderColor: '#ffffff',
+          backgroundColor: 'rgba(255, 255, 255, 0.5)',
+          pointBackgroundColor: '#ffffff',
+          pointHoverBorderColor: '#ffffff',
+          gridColor: 'rgba(255, 255, 255, 0.2)',
+          textColor: '#ffffff',
+          tooltipBackgroundColor: 'rgba(255, 255, 255, 0.8)',
+          tooltipTitleColor: '#000000',
+          tooltipBodyColor: '#000000'
+        };
+      } else {
+        return {
+          borderColor: '#006270',
+          backgroundColor: 'rgba(0, 98, 112, 0.5)',
+          pointBackgroundColor: '#006270',
+          pointHoverBorderColor: '#006270',
+          gridColor: 'rgba(200, 200, 200, 0.2)',
+          textColor: '#006270',
+          tooltipBackgroundColor: 'rgba(0, 98, 112, 0.8)',
+          tooltipTitleColor: 'white',
+          tooltipBodyColor: 'white'
+        };
+      }
+    },
     updateMonthlyExpensesChart() {
       if (this.monthlyExpensesChart) {
         this.monthlyExpensesChart.destroy();
@@ -45,12 +78,13 @@ export default {
         return acc;
       }, {});
 
-      const months = Object.keys(monthData).map(month => new Date(0, month).toLocaleString('default', {month: 'long'}));
+      const months = Object.keys(monthData).map(month => new Date(0, month).toLocaleString('default', { month: 'long' }));
       const amounts = Object.values(monthData);
 
+      const colors = this.getChartColors();
       const gradient = ctx.createLinearGradient(0, 0, 0, 400);
-      gradient.addColorStop(0, 'rgba(0, 98, 112, 0.5)'); // Updated color
-      gradient.addColorStop(1, 'rgba(0, 98, 112, 0)'); // Updated color
+      gradient.addColorStop(0, colors.backgroundColor);
+      gradient.addColorStop(1, 'rgba(0, 0, 0, 0)');
 
       this.monthlyExpensesChart = new Chart(ctx, {
         type: 'line',
@@ -59,15 +93,15 @@ export default {
           datasets: [{
             label: 'Expenses',
             data: amounts,
-            borderColor: '#006270', // Updated color
+            borderColor: colors.borderColor,
             backgroundColor: gradient,
             fill: true,
-            tension: 0.4, // Smooth curves
-            pointBackgroundColor: '#006270', // Updated color
+            tension: 0.4,
+            pointBackgroundColor: colors.pointBackgroundColor,
             pointBorderColor: 'white',
             pointHoverRadius: 5,
             pointHoverBackgroundColor: 'white',
-            pointHoverBorderColor: '#006270', // Updated color
+            pointHoverBorderColor: colors.pointHoverBorderColor,
             pointRadius: 3,
             pointHitRadius: 10
           }]
@@ -77,12 +111,18 @@ export default {
             x: {
               grid: {
                 display: false
+              },
+              ticks: {
+                color: colors.textColor
               }
             },
             y: {
               beginAtZero: true,
               grid: {
-                color: 'rgba(200, 200, 200, 0.2)'
+                color: colors.gridColor
+              },
+              ticks: {
+                color: colors.textColor
               }
             }
           },
@@ -92,21 +132,21 @@ export default {
               display: true,
               position: 'top',
               labels: {
-                color: '#006270' // Updated color
+                color: colors.textColor
               }
             },
             title: {
               display: true,
               text: 'Monthly Expenses by Month',
-              color: '#006270', // Updated color
+              color: colors.textColor,
               font: {
                 size: 18
               }
             },
             tooltip: {
-              backgroundColor: 'rgba(0, 98, 112, 0.8)', // Updated color
-              titleColor: 'white',
-              bodyColor: 'white',
+              backgroundColor: colors.tooltipBackgroundColor,
+              titleColor: colors.tooltipTitleColor,
+              bodyColor: colors.tooltipBodyColor,
               callbacks: {
                 label: function (tooltipItem) {
                   return tooltipItem.label + ': $' + tooltipItem.raw.toFixed(2);
@@ -117,7 +157,7 @@ export default {
         }
       });
     },
-    updateMonthlyIncomesChart(){
+    updateMonthlyIncomesChart() {
       if (this.monthlyIncomesChart) {
         this.monthlyIncomesChart.destroy();
       }
@@ -134,9 +174,10 @@ export default {
       const months = Object.keys(monthData).map(month => new Date(0, month).toLocaleString('default', {month: 'long'}));
       const amounts = Object.values(monthData);
 
+      const colors = this.getChartColors();
       const gradient = ctx.createLinearGradient(0, 0, 0, 400);
-      gradient.addColorStop(0, 'rgba(0, 98, 112, 0.5)'); // Updated color
-      gradient.addColorStop(1, 'rgba(0, 98, 112, 0)'); // Updated color
+      gradient.addColorStop(0, colors.backgroundColor);
+      gradient.addColorStop(1, 'rgba(0, 0, 0, 0)');
 
       this.monthlyIncomesChart = new Chart(ctx, {
         type: 'line',
@@ -145,15 +186,15 @@ export default {
           datasets: [{
             label: 'Incomes',
             data: amounts,
-            borderColor: '#006270', // Updated color
+            borderColor: colors.borderColor,
             backgroundColor: gradient,
             fill: true,
-            tension: 0.4, // Smooth curves
-            pointBackgroundColor: '#006270', // Updated color
+            tension: 0.4,
+            pointBackgroundColor: colors.pointBackgroundColor,
             pointBorderColor: 'white',
             pointHoverRadius: 5,
             pointHoverBackgroundColor: 'white',
-            pointHoverBorderColor: '#006270', // Updated color
+            pointHoverBorderColor: colors.pointHoverBorderColor,
             pointRadius: 3,
             pointHitRadius: 10
           }]
@@ -163,12 +204,18 @@ export default {
             x: {
               grid: {
                 display: false
+              },
+              ticks: {
+                color: colors.textColor
               }
             },
             y: {
               beginAtZero: true,
               grid: {
-                color: 'rgba(200, 200, 200, 0.2)'
+                color: colors.gridColor
+              },
+              ticks: {
+                color: colors.textColor
               }
             }
           },
@@ -178,21 +225,21 @@ export default {
               display: true,
               position: 'top',
               labels: {
-                color: '#006270' // Updated color
+                color: colors.textColor
               }
             },
             title: {
               display: true,
               text: 'Monthly Incomes by Month',
-              color: '#006270', // Updated color
+              color: colors.textColor,
               font: {
                 size: 18
               }
             },
             tooltip: {
-              backgroundColor: 'rgba(0, 98, 112, 0.8)', // Updated color
-              titleColor: 'white',
-              bodyColor: 'white',
+              backgroundColor: colors.tooltipBackgroundColor,
+              titleColor: colors.tooltipTitleColor,
+              bodyColor: colors.tooltipBodyColor,
               callbacks: {
                 label: function (tooltipItem) {
                   return tooltipItem.label + ': $' + tooltipItem.raw.toFixed(2);
@@ -203,24 +250,23 @@ export default {
         }
       });
     }
-}
-
-
+  }
 }
 </script>
 
 <style scoped>
 .charts-container {
-  width: 100%; /* Reduced width for better alignment */
+  width: 100%;
   margin: 0 auto;
 }
 
-@Media(min-width: 768px) {
+@media (min-width: 768px) {
   .charts-container {
     width: 80%;
-    height:100%;
+    height: 100%;
   }
 }
+
 .chart-card {
   border-radius: 8px;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
@@ -252,5 +298,4 @@ export default {
     width: 100%;
   }
 }
-
 </style>
