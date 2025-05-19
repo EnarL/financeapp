@@ -1,18 +1,45 @@
 <template>
   <div class="settings-item">
     <label class="switch">
-      <input type="checkbox" @change="toggleDark()" :checked="isDark">
+      <input type="checkbox" @change="toggleDark" :checked="isDark">
       <span class="slider round"></span>
     </label>
   </div>
 </template>
-<script setup>
-import { useDark, useToggle } from "@vueuse/core";
-const isDark = useDark();
-const toggleDark = useToggle(isDark);
-</script>
-<style>
 
+<script>
+export default {
+  name: 'DarkModeToggle',
+  data() {
+    return {
+      isDark: false
+    };
+  },
+  mounted() {
+    const darkMode = localStorage.getItem('darkMode');
+    if (darkMode === 'true') {
+      this.isDark = true;
+      document.documentElement.classList.add('dark');
+    }
+  },
+  methods: {
+    toggleDark() {
+      this.isDark = !this.isDark;
+      if (this.isDark) {
+        document.documentElement.classList.add('dark');
+        localStorage.setItem('darkMode', 'true');
+      } else {
+        document.documentElement.classList.remove('dark');
+        localStorage.setItem('darkMode', 'false');
+      }
+      // Emit event for parent components to react to dark mode changes
+      this.$emit('dark-mode-changed', this.isDark);
+    }
+  }
+};
+</script>
+
+<style scoped>
 .switch {
   position: relative;
   display: inline-block;
@@ -26,7 +53,6 @@ const toggleDark = useToggle(isDark);
   height: 0;
 }
 
-
 .slider {
   position: absolute;
   cursor: pointer;
@@ -37,7 +63,6 @@ const toggleDark = useToggle(isDark);
   background-color: #ccc;
   -webkit-transition: .4s;
   transition: .4s;
-
 }
 
 .slider:before {
@@ -66,7 +91,6 @@ input:checked + .slider:before {
   transform: translateX(26px);
 }
 
-/* Rounded sliders */
 .slider.round {
   border-radius: 34px;
 }

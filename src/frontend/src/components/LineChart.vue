@@ -9,23 +9,35 @@
 
 <script>
 import { Chart, registerables } from 'chart.js';
-import { useDark } from '@vueuse/core';
 
 Chart.register(...registerables);
 
 export default {
-  name: 'ChartsContainer',
+  name: 'LineChart',
   props: {
     expenses: Array,
     incomes: Array
   },
-  setup() {
-    const isDark = useDark();
-    return { isDark };
+  data() {
+    return {
+      isDark: false
+    };
   },
   mounted() {
+    this.checkDarkMode();
     this.updateMonthlyExpensesChart();
     this.updateMonthlyIncomesChart();
+
+    document.addEventListener('darkModeChanged', this.handleDarkModeChange);
+  },
+  beforeUnmount() {
+    document.removeEventListener('darkModeChanged', this.handleDarkModeChange);
+    if (this.monthlyExpensesChart) {
+      this.monthlyExpensesChart.destroy();
+    }
+    if (this.monthlyIncomesChart) {
+      this.monthlyIncomesChart.destroy();
+    }
   },
   watch: {
     expenses: 'updateMonthlyExpensesChart',
@@ -33,6 +45,13 @@ export default {
     isDark: 'updateCharts'
   },
   methods: {
+    checkDarkMode() {
+      this.isDark = document.documentElement.classList.contains('dark');
+    },
+    handleDarkModeChange() {
+      this.checkDarkMode();
+      this.updateCharts();
+    },
     updateCharts() {
       this.updateMonthlyExpensesChart();
       this.updateMonthlyIncomesChart();
