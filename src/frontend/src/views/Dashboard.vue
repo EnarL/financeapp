@@ -15,7 +15,7 @@
 </template>
 
 <script>
-import { mapState, mapActions } from 'vuex';
+import {mapActions, mapState} from 'vuex';
 import AddExpense from '@/components/AddExpense.vue';
 import AddIncome from '@/components/AddIncome.vue';
 import ChartsContainer from '@/components/ChartsContainer.vue';

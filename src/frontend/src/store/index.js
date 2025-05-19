@@ -1,4 +1,4 @@
-import { createStore } from 'vuex';
+import {createStore} from 'vuex';
 import expenses from './modules/expenses';
 import incomes from './modules/incomes';
 import user from './modules/user';

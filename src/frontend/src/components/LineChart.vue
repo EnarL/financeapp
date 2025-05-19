@@ -8,7 +8,7 @@
 </template>
 
 <script>
-import { Chart, registerables } from 'chart.js';
+import {Chart, registerables} from 'chart.js';
 
 Chart.register(...registerables);
 

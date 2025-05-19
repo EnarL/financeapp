@@ -8,8 +8,8 @@
 </template>
 
 <script>
-import { computed } from 'vue';
-import { useRoute } from 'vue-router';
+import {computed} from 'vue';
+import {useRoute} from 'vue-router';
 import TopBar from "@/components/TopBar.vue";
 import SideBar from "@/components/SideBar.vue";
 
