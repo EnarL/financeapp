@@ -41,8 +41,3 @@ A simplistic finance app designed to manage and track personal finances.
    ```bash
    npm run serve
 
-### Test account
-
-username: test
-
-password: test
