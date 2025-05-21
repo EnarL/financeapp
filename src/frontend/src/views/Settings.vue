@@ -1,6 +1,6 @@
 <script setup>
-import { ref } from "vue";
-import { useStore } from "vuex";
+import {ref} from "vue";
+import {useStore} from "vuex";
 import {useRouter} from 'vue-router';
 
 import ChangePassword from "@/components/ChangePassword.vue";

@@ -5,9 +5,9 @@
 </template>
 
 <script>
-import { mapState, mapActions } from 'vuex';
+import {mapActions, mapState} from 'vuex';
 import LineChart from "@/components/LineChart.vue";
-import { useDark } from "@vueuse/core";
+import {useDark} from "@vueuse/core";
 
 export default {
   // eslint-disable-next-line vue/multi-word-component-names

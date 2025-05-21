@@ -11,19 +11,15 @@
 import UserIcon from '@/components/UserIcon.vue';
 import DarkModeToggle from "@/components/DarkModeToggle.vue";
 
-
-
 export default {
   name: 'TopBar',
   components: {
     DarkModeToggle,
     UserIcon
-
   },
   data() {
-
-  },
-
+    return {};
+  }
 };
 </script>
 
@@ -42,9 +38,6 @@ export default {
   display: flex;
   align-items: center;
 }
-
-
-
 
 button {
   background: none;
