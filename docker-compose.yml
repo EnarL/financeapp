@@ -4,6 +4,6 @@ services:
     environment:
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: password
-      POSTGRES_DB: fitness
+      POSTGRES_DB: finance
     ports:
       - "5432:5432"
