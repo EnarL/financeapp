@@ -15,6 +15,8 @@ A simplistic finance app designed to manage and track personal finances.
 
 ## Installation Instructions
 
+**Note**: There is currently no working deployment link available. To run this application, you'll need to set it up locally with the required environment variables.
+
 ### Backend (Java Spring Boot)
 
 1. Clone the repository to your local machine.
@@ -40,4 +42,9 @@ A simplistic finance app designed to manage and track personal finances.
  
    ```bash
    npm run serve
+
+An example image of Incomes tab with light and dark mode
+
+![image (1)](https://github.com/user-attachments/assets/1d8a0727-6423-48dd-a0fc-8b98d063c946)
+
 
